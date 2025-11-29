@@ -1,0 +1,124 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Carpart;
+use App\Models\Car;
+use Illuminate\Http\Request;
+
+class CarpartController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $carparts = Carpart::with('cars')->get();
+        $cars = Car::all();
+        return view('carparts', compact('carparts', 'cars'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $request->merge([
+            'price' => str_replace(',', '.', $request->price)
+        ]);
+
+        $validated = $request->validate([
+            'name' => 'required|unique:carparts,name|min:5',
+            'description' => 'required|min:10|max:400',
+            'price' => 'required|numeric|min:1|max:300',
+            'date' => 'required|date|unique:carparts,date|after_or_equal:today',
+            'cars.*.category' => 'nullable|in:appetizer,main,dessert',
+        ], [
+            'name.required' => 'Vul een naam in voor dit onderdeel.',
+            'name.unique' => 'Dit onderdeel bestaat al.',
+            'name.min' => 'De naam moet minimaal 5 letters hebben.',
+            'description.required' => 'Vul een beschrijving in voor dit onderdeel.',
+            'description.min' => 'De beschrijving moet minimaal 10 tekens bevatten.',
+            'description.max' => 'De beschrijving mag maximaal 400 tekens bevatten.',
+            'price.required' => 'Vul een prijs in.',
+            'price.numeric' => 'Vul een geldig getal in.',
+            'price.min' => 'De prijs moet minimaal 1 euro zijn.',
+            'price.max' => 'De prijs mag maximaal 300 euro zijn.',
+            'date.required' => 'Vul een datum in.',
+            'date.unique' => 'Er bestaat al een onderdeel voor deze datum.',
+            'date.date' => 'Vul een geldige datum in.',
+            'date.after_or_equal' => 'De datum mag niet in het verleden liggen.',
+            'cars.*.category.in' => 'Selecteer een geldige categorie.',
+        ]);
+
+        $carpart = Carpart::create($validated);
+
+        if ($request->has('cars')) {
+            foreach ($request->cars as $carId => $carData) {
+                if (isset($carData['selected']) && !empty($carData['category'])) {
+                    $carpart->cars()->attach($carId, [
+                        'category' => $carData['category']
+                    ]);
+                }
+            }
+        }
+
+        return redirect()->route('carparts.index')->with('success', 'Onderdeel succesvol toegevoegd!');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Request $request)
+    {
+        $carparts = Carpart::with('cars')->get();
+        $cars = Car::all();
+
+        $carpart = null;
+        if ($request->has('carpart')) {
+            $carpart = Carpart::with('cars')->find($request->carpart);
+        }
+
+        return view('carparts', compact('carparts', 'carpart', 'cars'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Carpart $carpart)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Carpart $carpart)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Request $request)
+    {
+        $carpart = Carpart::findOrFail($request->carpart_id);
+        if ($carpart) {
+            $carpart->cars()->detach();
+            $carpart->delete();
+
+            return redirect()->route('carparts.index')->with('success', 'Onderdeel succesvol verwijderd!');
+        }
+
+        return redirect()->route('carparts.index')->with('error', 'Onderdeel niet gevonden.');
+    }
+}
