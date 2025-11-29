@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Dish extends Model
+class Car extends Model
 {
     use HasFactory;
 
@@ -14,7 +14,7 @@ class Dish extends Model
 
     public function dailymenus()
     {
-        return $this->belongsToMany(Dailymenu::class, 'dish_menus')
+        return $this->belongsToMany(Carpart::class, 'dish_menus')
             ->withPivot('category')
             ->withTimestamps();
     }
