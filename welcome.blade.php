@@ -13,7 +13,7 @@
                     </div>
                     <div class="my-2 ">
                         @foreach ($dishes as $dish)
-                            @if ($dish->category === 'appetizer')
+                            @if ($dish->category === 'app')
                                 <div class=" ">
                                     <p class="text-md md:text-lg mb-2"> <strong>{{ $dish->name }}</strong>
                                         €{{ $dish->price }} <br>
@@ -48,7 +48,7 @@
                     </div>
                     <div class="my-2 ">
                         @foreach ($dishes as $dish)
-                            @if ($dish->category === 'dessert')
+                            @if ($dish->category === 'toet')
                                 <div class=" ">
                                     <p class="text-md md:text-lg mb-2"> <strong>{{ $dish->name }}</strong> €{{ $dish->price }} <br>
                                         {{ $dish->description }}
