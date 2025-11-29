@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>GoedeEten @yield('title')</title>
+    <title>CarDealer @yield('title')</title>
 
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -38,11 +38,11 @@
                 @if (Route::has('login'))
                     @auth
                         <li class="px-5 py-1.5 bg-amber-100 hover:bg-white border rounded-sm text-sm">
-                            <a href="{{ route('gerechten') }}">Gerechten</a>
+                            <a href="{{ route('cars') }}">Cars</a>
                         </li>
 
                         <li class="px-5 py-1.5 bg-amber-100 hover:bg-white border rounded-sm text-sm">
-                            <a href="{{ route('dailymenus.index') }}">Dagmenu</a>
+                            <a href="{{ route('carparts.index') }}">Carparts</a>
                         </li>
 
                         <li class="px-5 py-1.5 bg-amber-100 hover:bg-white border rounded-sm text-sm">
@@ -80,11 +80,11 @@
                 @if (Route::has('login'))
                     @auth
                         <li class="px-4 py-2 bg-amber-100 border rounded-sm">
-                            <a href="{{ route('gerechten') }}">Gerechten</a>
+                            <a href="{{ route('cars') }}">cars</a>
                         </li>
 
                         <li class="px-4 py-2 bg-amber-100 border rounded-sm">
-                            <a href="{{ route('dailymenus.index') }}">Dagmenu</a>
+                            <a href="{{ route('carparts.index') }}">carparts</a>
                         </li>
 
                         <li class="px-4 py-2 bg-amber-100 border rounded-sm">
@@ -119,7 +119,7 @@
     </main>
 
     <footer class="bg-white shadow p-4 text-center">
-        &copy; 2025 GoedeEten
+        &copy; 2025 CarDealer
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
