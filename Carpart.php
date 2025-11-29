@@ -14,7 +14,7 @@ class Dailymenu extends Model
 
     public function dishes()
     {
-        return $this->belongsToMany(Dish::class, 'dish_menus', 'menu_id', 'dish_id')
+        return $this->belongsToMany(Car::class, 'dish_menus', 'menu_id', 'dish_id')
             ->withPivot('category')
             ->withTimestamps();
     }
